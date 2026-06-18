@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Événements</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            display: flex;
+            background: #f5f5f5;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 220px;
+            background: #1f2937;
+            color: white;
+            padding: 20px;
+        }
+
+        .sidebar h2 {
+            margin-bottom: 30px;
+        }
+
+        .sidebar a {
+            display: block;
+            color: white;
+            text-decoration: none;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 10px;
+        }
+
+        .sidebar a:hover {
+            background: #374151;
+        }
+
+        .content {
+            flex: 1;
+            padding: 30px;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        .search-form {
+            display: flex;
+            gap: 10px;
+        }
+
+        .search-form input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+        }
+
+        button {
+            border: none;
+            padding: 10px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            background: #2563eb;
+            color: white;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+        }
+
+        .event {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .event:last-child {
+            border-bottom: none;
+        }
+
+        .event-info h3 {
+            margin-bottom: 5px;
+        }
+
+        .event-info p {
+            color: #666;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="sidebar">
+        <h2>Dashboard</h2>
+
+        <a href="/events">📅 Événements</a>
+        <a href="/my-reservations">🎟️ Mes réservations</a>
+        <a href="/logout">🚪 Déconnexion</a>
+    </div>
+
+    <div class="content">
+
+        <h1>Événements disponibles</h1>
+
+        <div class="card">
+            <form class="search-form" action="/events/search" method="GET">
+                <input type="text" name="query" placeholder="Rechercher un événement...">
+                <button type="submit">
+                    Rechercher
+                </button>
+            </form>
+        </div>
+
+        <div class="card">
+
+            <div class="event">
+                <div class="event-info">
+                    <h3>Festival de Musique</h3>
+                    <p>12 août 2026 • Montréal</p>
+                </div>
+
+                <form action="/reservations/create" method="POST">
+                    <input type="hidden" name="event_id" value="1">
+                    <button type="submit">Réserver</button>
+                </form>
+            </div>
+
+            <div class="event">
+                <div class="event-info">
+                    <h3>Conférence Tech</h3>
+                    <p>20 septembre 2026 • Montréal</p>
+                </div>
+
+                <form action="/reservations/create" method="POST">
+                    <input type="hidden" name="event_id" value="2">
+                    <button type="submit">Réserver</button>
+                </form>
+            </div>
+
+            <div class="event">
+                <div class="event-info">
+                    <h3>Salon du Livre</h3>
+                    <p>2 octobre 2026 • Montréal</p>
+                </div>
+
+                <form action="/reservations/create" method="POST">
+                    <input type="hidden" name="event_id" value="3">
+                    <button type="submit">Réserver</button>
+                </form>
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>

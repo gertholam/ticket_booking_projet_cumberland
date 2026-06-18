@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administration</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            display: flex;
+            min-height: 100vh;
+            background: #f5f5f5;
+        }
+
+        .sidebar {
+            width: 250px;
+            background: #1f2937;
+            color: white;
+            padding: 20px;
+        }
+
+        .sidebar h2 {
+            margin-bottom: 30px;
+        }
+
+        .sidebar a {
+            display: block;
+            color: white;
+            text-decoration: none;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 10px;
+        }
+
+        .sidebar a:hover {
+            background: #374151;
+        }
+
+        .content {
+            flex: 1;
+            padding: 30px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .btn-create {
+            background: #16a34a;
+            color: white;
+            text-decoration: none;
+            padding: 10px 15px;
+            border-radius: 6px;
+        }
+
+        .btn-create:hover {
+            background: #15803d;
+        }
+
+        .card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, .08);
+        }
+
+        .event-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-edit {
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+        }
+
+        .btn-delete {
+            background: #dc2626;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        p {
+            color: #666;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="sidebar">
+        <h2>Administration</h2>
+
+        <a href="/admin/events">📅 Événements</a>
+        <a href="/admin/events/create">➕ Créer un événement</a>
+        <a href="/logout">🚪 Déconnexion</a>
+    </div>
+
+    <div class="content">
+
+        <div class="header">
+            <h1>Gestion des événements</h1>
+
+            <a href="/admin/events/create" class="btn-create">
+                + Nouvel événement
+            </a>
+        </div>
+
+        <div class="card">
+            <div class="event-header">
+                <div>
+                    <h3>Festival de Musique</h3>
+                    <p>12 août 2026 • Montréal</p>
+                </div>
+
+                <div class="actions">
+                    <a href="/admin/events/edit/1" class="btn-edit">
+                        Modifier
+                    </a>
+
+                    <form action="/admin/events/delete/1" method="POST">
+                        <button class="btn-delete">
+                            Supprimer
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="event-header">
+                <div>
+                    <h3>Conférence Tech</h3>
+                    <p>20 septembre 2026 • Montréal</p>
+                </div>
+
+                <div class="actions">
+                    <a href="/admin/events/edit/2" class="btn-edit">
+                        Modifier
+                    </a>
+
+                    <form action="/admin/events/delete/2" method="POST">
+                        <button class="btn-delete">
+                            Supprimer
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+
+</html>

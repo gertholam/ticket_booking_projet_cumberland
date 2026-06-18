@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Créer un événement</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 700px;
+            margin: 40px auto;
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+        }
+
+        button {
+            padding: 10px 15px;
+            border: none;
+            background: #16a34a;
+            color: white;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Créer un événement</h1>
+
+    <form method="POST" action="/admin/events/create">
+
+        <input type="text" name="title" placeholder="Nom de l'événement" required>
+
+        <input type="date" name="date" required>
+
+        <input type="text" name="location" placeholder="Lieu" required>
+
+        <textarea name="description" rows="6" placeholder="Description"></textarea>
+
+        <button type="submit">
+            Créer l'événement
+        </button>
+
+    </form>
+
+</body>
+
+</html>

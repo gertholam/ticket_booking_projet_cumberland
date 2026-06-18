@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, request, redirect
 from app.models import db
 from app.models.event import Event
+from app.models.booking import Booking
 
 view_bp = Blueprint('view', __name__)
 
@@ -61,7 +62,43 @@ def delete_event(id):
     return redirect("/admin/events")
 
 
-# DASHBOARD UTILISATEUR
+# DASHBOARD UTILISATEUR + AFFICHAGE DES RÉSERVATIONS
 @view_bp.route("/my-reservations")
 def my_reservations():
-    return render_template("user_dash.html")
+    user_id = 1  # temporaire, remplacer par l'ID réel de l'utilisateur connecté
+    bookings = Booking.query.filter_by(user_id=user_id).all()
+    return render_template("user_dash.html", bookings=bookings)
+
+
+# CREATION DE RÉSERVATION
+@view_bp.route("/reservations/create", methods=["POST"])
+def create_booking():
+    data = request.form
+    user_id = 1  # Simuler un utilisateur connecté
+    event_id = request.form.get("event_id", type=int)
+
+    if event_id is None:
+        return redirect("/events")
+
+    new_booking = Booking(
+        user_id=user_id,
+        event_id=event_id,
+        status='pending'
+    )
+
+    db.session.add(new_booking)
+    db.session.commit()
+
+    return redirect("/my-reservations")
+
+
+# ANNULATION DE RÉSERVATION
+@view_bp.route("/reservations/cancel/<int:id>", methods=["POST"])
+def cancel_booking(id):
+    booking = Booking.query.get(id)
+
+    if booking:
+        booking.status = "cancelled"
+        db.session.commit()
+
+    return redirect("/my-reservations")

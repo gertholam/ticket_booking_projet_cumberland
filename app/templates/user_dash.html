@@ -110,60 +110,28 @@
 
         <h1>Mes réservations</h1>
 
+        {% for booking in bookings %}
         <div class="card">
             <div class="header">
                 <div>
-                    <h3>Festival de Musique</h3>
-                    <p>12 août 2026</p>
+                    <h3>{{ booking.event.event_name }}</h3>
+                    <p>{{ booking.event.event_date }}</p>
                 </div>
 
-                <span class="status pending">
-                    En attente
+                <span class="status {{ booking.status }}">
+                    {{ booking.status }}
                 </span>
             </div>
 
             <br>
 
-            <form action="/reservations/cancel/1" method="POST">
+            <form action="/reservations/cancel/{{ booking.id }}" method="POST">
                 <button type="submit">
-                    Annuler la réservation
+                    Annuler
                 </button>
             </form>
         </div>
-
-        <div class="card">
-            <div class="header">
-                <div>
-                    <h3>Conférence Tech</h3>
-                    <p>20 septembre 2026</p>
-                </div>
-
-                <span class="status confirmed">
-                    Réservé
-                </span>
-            </div>
-
-            <br>
-
-            <form action="/reservations/cancel/2" method="POST">
-                <button type="submit">
-                    Annuler la réservation
-                </button>
-            </form>
-        </div>
-
-        <div class="card">
-            <div class="header">
-                <div>
-                    <h3>Salon du Livre</h3>
-                    <p>2 octobre 2026</p>
-                </div>
-
-                <span class="status cancelled">
-                    Annulé
-                </span>
-            </div>
-        </div>
+        {% endfor %}
 
     </div>
 

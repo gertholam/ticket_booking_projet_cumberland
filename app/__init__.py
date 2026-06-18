@@ -2,6 +2,7 @@ from flask import Flask
 from flask_bcrypt import Bcrypt
 from app.models import db   # IMPORTANT
 from flask_jwt_extended import JWTManager
+from app.routes.view_routes import view_bp # Importation du blueprint des vues
 
 bcrypt = Bcrypt()
 jwt = JWTManager()
@@ -21,5 +22,6 @@ def create_app():
 
     from app.routes.auth_routes import auth_bp
     app.register_blueprint(auth_bp)
+    app.register_blueprint(view_bp)
 
     return app

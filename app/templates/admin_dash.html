@@ -131,47 +131,22 @@
             </a>
         </div>
 
+        {% for event in events %}
         <div class="card">
             <div class="event-header">
                 <div>
-                    <h3>Festival de Musique</h3>
-                    <p>12 août 2026 • Montréal</p>
+                    <h3>{{ event.event_name }}</h3>
+                    <p>{{ event.event_date }} • {{ event.location }}</p>
                 </div>
 
                 <div class="actions">
-                    <a href="/admin/events/edit/1" class="btn-edit">
-                        Modifier
-                    </a>
-
-                    <form action="/admin/events/delete/1" method="POST">
-                        <button class="btn-delete">
-                            Supprimer
-                        </button>
+                    <form action="/admin/events/delete/{{ event.id }}" method="POST">
+                        <button class="btn-delete">Supprimer</button>
                     </form>
                 </div>
             </div>
         </div>
-
-        <div class="card">
-            <div class="event-header">
-                <div>
-                    <h3>Conférence Tech</h3>
-                    <p>20 septembre 2026 • Montréal</p>
-                </div>
-
-                <div class="actions">
-                    <a href="/admin/events/edit/2" class="btn-edit">
-                        Modifier
-                    </a>
-
-                    <form action="/admin/events/delete/2" method="POST">
-                        <button class="btn-delete">
-                            Supprimer
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </div>
+        {% endfor %}
 
     </div>
 

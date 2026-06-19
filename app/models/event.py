@@ -11,4 +11,5 @@ class Event(db.Model):
     categorie = db.Column(db.String(255))
     description = db.Column(db.Text)
 
-    bookings = db.relationship('Booking', backref='event', lazy=True)
+    # ❌ SUPPRIMÉ :
+    # bookings = db.relationship('Booking', backref='event', lazy=True)

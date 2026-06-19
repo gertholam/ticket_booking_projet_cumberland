@@ -9,4 +9,5 @@ class User(db.Model):
     password = db.Column(db.String(255), nullable=False)
     role = db.Column(db.String(10))
 
-    bookings = db.relationship('Booking', backref='user', lazy=True)
+    
+    # bookings = db.relationship('Booking', backref='user', lazy=True)

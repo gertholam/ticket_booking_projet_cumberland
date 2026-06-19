@@ -118,6 +118,7 @@
 
         <a href="/admin/events">📅 Événements</a>
         <a href="/admin/events/create">➕ Créer un événement</a>
+        <a href="/admin/bookings">🎟️ Réservations</a>
         <a href="/logout">🚪 Déconnexion</a>
     </div>
 
@@ -140,6 +141,9 @@
                 </div>
 
                 <div class="actions">
+                    <a href="/admin/events/edit/{{ event.id }}" class="btn-edit">
+                        Modifier
+                    </a>
                     <form action="/admin/events/delete/{{ event.id }}" method="POST">
                         <button class="btn-delete">Supprimer</button>
                     </form>

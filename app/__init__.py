@@ -1,8 +1,7 @@
 from flask import Flask
 from flask_bcrypt import Bcrypt
-from app.models import db   # IMPORTANT
+from app.models import db
 from flask_jwt_extended import JWTManager
-from app.routes.view_routes import view_bp # Importation du blueprint des vues
 
 bcrypt = Bcrypt()
 jwt = JWTManager()
@@ -13,14 +12,21 @@ def create_app():
     from app.config import Config
     app.config.from_object(Config)
 
-    db.init_app(app)   # Lien entre Flask et DB
+    # CRET KEY (IMPORTANT)
+    app.secret_key = "super_secret_key"
+
+    # INIT EXTENSIONS
+    db.init_app(app)
     bcrypt.init_app(app)
-    
-    #INIT JWT
+
+    # JWT
     app.config["JWT_SECRET_KEY"] = "jwt-secret-key"
     jwt.init_app(app)
 
+    # IMPORTS DANS LA FONCTION (IMPORTANT 🔥)
     from app.routes.auth_routes import auth_bp
+    from app.routes.view_routes import view_bp
+
     app.register_blueprint(auth_bp)
     app.register_blueprint(view_bp)
 

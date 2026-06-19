@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestion des réservations</title>
+</head>
+
+<body>
+
+    <h1>Réservations</h1>
+
+    {% for booking in bookings %}
+    <div style="border:1px solid #ccc; padding:15px; margin-bottom:10px;">
+
+        <p><strong>Utilisateur :</strong> {{ booking.user.username }}</p>
+        <p><strong>Événement :</strong> {{ booking.event.event_name }}</p>
+        <p><strong>Status :</strong> {{ booking.status }}</p>
+
+        {% if booking.status == "pending" %}
+        <form action="/admin/bookings/accept/{{ booking.id }}" method="POST">
+            <button type="submit">✅ Accepter</button>
+        </form>
+
+        <form action="/admin/bookings/reject/{{ booking.id }}" method="POST">
+            <button type="submit">❌ Refuser</button>
+        </form>
+        {% endif %}
+
+    </div>
+    {% endfor %}
+
+</body>
+</html>

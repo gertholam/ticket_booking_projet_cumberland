@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}Modifier un utilisateur — EventFlow{% endblock %}
+{% block sidebar_label %}Administration{% endblock %}
+{% block sidebar %}
+  <a href="/admin/events"> Événements</a>
+  <a href="/admin/events/create"> Créer un événement</a>
+  <a href="/admin/bookings"> Réservations</a>
+  <a href="/admin/users" class="active"> Utilisateurs</a>
+{% endblock %}
+{% block page_heading %}Modifier l'utilisateur{% endblock %}
+{% block subtitle %}<span class="text-muted">Mettez à jour le compte ou le rôle.</span>{% endblock %}
+{% block topbar_action %}<a href="/admin/users" class="btn btn-ghost">← Retour</a>{% endblock %}
+{% block content %}
+  <div class="card form-card">
+    <form method="POST" action="/admin/users/edit/{{ user.id }}">
+      <div class="form-group">
+        <label>Nom d'utilisateur</label>
+        <input type="text" name="username" value="{{ user.username }}" required>
+      </div>
+      <div class="form-group">
+        <label>Adresse e-mail</label>
+        <input type="email" name="email" value="{{ user.email }}" required>
+      </div>
+      <div class="form-group">
+        <label>Mot de passe (laisser vide pour garder le même)</label>
+        <input type="password" name="password" placeholder="••••••••">
+      </div>
+      <div class="form-group">
+        <label>Rôle</label>
+        <select name="role">
+          <option value="client" {% if user.role == 'client' %}selected{% endif %}>Client</option>
+          <option value="admin" {% if user.role == 'admin' %}selected{% endif %}>Admin</option>
+        </select>
+      </div>
+      <div class="card-actions" style="justify-content:flex-end; margin-top: 12px;">
+        <a href="/admin/users" class="btn btn-ghost">Annuler</a>
+        <button class="btn btn-primary" type="submit"> Enregistrer</button>
+      </div>
+    </form>
+  </div>
+{% endblock %}

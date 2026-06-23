@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}EventFlow{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="{% block body_class %}{% endblock %}">
+
+{% block layout %}
+<nav class="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-icon"></div>
+    <span>EventFlow</span>
+  </div>
+  <div class="nav-label">{% block sidebar_label %}Menu{% endblock %}</div>
+
+  {% block sidebar %}{% endblock %}
+
+  <div class="sidebar-spacer"></div>
+  <div class="sidebar-profile">
+    {% if session.get('username') %}
+      <div class="profile-name">Bonjour, {{ session.get('username') }}</div>
+      <a class="profile-link" href="/profile">Mon profil</a>
+    {% endif %}
+  </div>
+  <div class="logout">
+    <a href="/logout"> Déconnexion</a>
+  </div>
+</nav>
+
+<div class="main">
+  <div class="topbar">
+    <div>
+      <h1>{% block page_heading %}EventFlow{% endblock %}</h1>
+      {% block subtitle %}{% endblock %}
+    </div>
+    <div>{% block topbar_action %}{% endblock %}</div>
+  </div>
+
+  <div class="content">
+    {% block content %}{% endblock %}
+  </div>
+</div>
+{% endblock %}
+</div>
+
+{% block extra_scripts %}{% endblock %}
+
+</body>
+</html>

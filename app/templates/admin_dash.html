@@ -1,159 +1,38 @@
-<!DOCTYPE html>
-<html lang="fr">
+{% extends 'base.html' %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Administration</title>
-
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
-        }
-
-        body {
-            display: flex;
-            min-height: 100vh;
-            background: #f5f5f5;
-        }
-
-        .sidebar {
-            width: 250px;
-            background: #1f2937;
-            color: white;
-            padding: 20px;
-        }
-
-        .sidebar h2 {
-            margin-bottom: 30px;
-        }
-
-        .sidebar a {
-            display: block;
-            color: white;
-            text-decoration: none;
-            padding: 12px;
-            border-radius: 6px;
-            margin-bottom: 10px;
-        }
-
-        .sidebar a:hover {
-            background: #374151;
-        }
-
-        .content {
-            flex: 1;
-            padding: 30px;
-        }
-
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .btn-create {
-            background: #16a34a;
-            color: white;
-            text-decoration: none;
-            padding: 10px 15px;
-            border-radius: 6px;
-        }
-
-        .btn-create:hover {
-            background: #15803d;
-        }
-
-        .card {
-            background: white;
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 15px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, .08);
-        }
-
-        .event-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .actions {
-            display: flex;
-            gap: 10px;
-        }
-
-        .btn-edit {
-            background: #2563eb;
-            color: white;
-            text-decoration: none;
-            padding: 8px 12px;
-            border-radius: 6px;
-        }
-
-        .btn-delete {
-            background: #dc2626;
-            color: white;
-            border: none;
-            padding: 8px 12px;
-            border-radius: 6px;
-            cursor: pointer;
-        }
-
-        p {
-            color: #666;
-            margin-top: 5px;
-        }
-    </style>
-</head>
-
-<body>
-
-    <div class="sidebar">
-        <h2>Administration</h2>
-
-        <a href="/admin/events">📅 Événements</a>
-        <a href="/admin/events/create">➕ Créer un événement</a>
-        <a href="/admin/bookings">🎟️ Réservations</a>
-        <a href="/logout">🚪 Déconnexion</a>
+{% block title %}Administration — EventFlow{% endblock %}
+{% block sidebar_label %}Administration{% endblock %}
+{% block sidebar %}
+  <a href="/admin/events" class="active"> Événements</a>
+  <a href="/admin/events/create"> Créer un événement</a>
+  <a href="/admin/bookings"> Réservations</a>
+  <a href="/admin/users"> Utilisateurs</a>
+{% endblock %}
+{% block page_heading %}Gestion des événements{% endblock %}
+{% block subtitle %}<span class="text-muted">Créez et gérez vos événements depuis un seul endroit</span>{% endblock %}
+{% block topbar_action %}<a href="/admin/events/create" class="btn btn-success">+ Nouvel événement</a>{% endblock %}
+{% block content %}
+  {% for event in events %}
+  <div class="card card-row">
+    <div class="card-meta">
+      <div class="symbol">🗓️</div>
+      <div>
+        <h3>{{ event.event_name }}</h3>
+        <p class="text-muted">📅 {{ event.event_date }} • 📍 {{ event.location }}</p>
+      </div>
     </div>
-
-    <div class="content">
-
-        <div class="header">
-            <h1>Gestion des événements</h1>
-
-            <a href="/admin/events/create" class="btn-create">
-                + Nouvel événement
-            </a>
-        </div>
-
-        {% for event in events %}
-        <div class="card">
-            <div class="event-header">
-                <div>
-                    <h3>{{ event.event_name }}</h3>
-                    <p>{{ event.event_date }} • {{ event.location }}</p>
-                </div>
-
-                <div class="actions">
-                    <a href="/admin/events/edit/{{ event.id }}" class="btn-edit">
-                        Modifier
-                    </a>
-                    <form action="/admin/events/delete/{{ event.id }}" method="POST">
-                        <button class="btn-delete">Supprimer</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-        {% endfor %}
-
+    <div class="card-actions">
+      <a href="/admin/events/edit/{{ event.id }}" class="btn btn-edit"> Modifier</a>
+      <form action="/admin/events/delete/{{ event.id }}" method="POST">
+        <button class="btn btn-danger" type="submit" onclick="return confirm('Supprimer cet événement ?')"> Supprimer</button>
+      </form>
     </div>
-
-</body>
-
-</html>
+  </div>
+  {% else %}
+  <div class="empty">
+    <div class="empty-icon"></div>
+    <h3>Aucun événement créé</h3>
+    <p><a href="/admin/events/create" class="btn btn-primary" style="padding: 8px 12px; display:inline-block;">Créez votre premier événement</a> pour commencer.</p>
+  </div>
+  {% endfor %}
+{% endblock %}

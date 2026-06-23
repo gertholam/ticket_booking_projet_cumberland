@@ -1,140 +1,41 @@
-<!DOCTYPE html>
-<html lang="fr">
+{% extends 'base.html' %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mes réservations</title>
-
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
-        }
-
-        body {
-            display: flex;
-            background: #f5f5f5;
-            min-height: 100vh;
-        }
-
-        .sidebar {
-            width: 220px;
-            background: #1f2937;
-            color: white;
-            padding: 20px;
-        }
-
-        .sidebar h2 {
-            margin-bottom: 30px;
-        }
-
-        .sidebar a {
-            display: block;
-            color: white;
-            text-decoration: none;
-            padding: 12px;
-            border-radius: 6px;
-            margin-bottom: 10px;
-        }
-
-        .sidebar a:hover {
-            background: #374151;
-        }
-
-        .content {
-            flex: 1;
-            padding: 30px;
-        }
-
-        .card {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 15px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-        }
-
-        .status {
-            padding: 4px 10px;
-            border-radius: 4px;
-            font-size: 13px;
-        }
-
-        .pending {
-            background: #fef3c7;
-        }
-
-        .confirmed {
-            background: #dcfce7;
-        }
-
-        .cancelled {
-            background: #fee2e2;
-        }
-
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        button {
-            border: none;
-            padding: 10px 15px;
-            border-radius: 6px;
-            cursor: pointer;
-            background: #dc2626;
-            color: white;
-        }
-
-        button:hover {
-            background: #b91c1c;
-        }
-    </style>
-</head>
-
-<body>
-
-    <div class="sidebar">
-        <h2>Dashboard</h2>
-
-        <a href="/events">📅 Événements</a>
-        <a href="/my-reservations">🎟️ Mes réservations</a>
-        <a href="/logout">🚪 Déconnexion</a>
+{% block title %}Mes réservations — EventFlow{% endblock %}
+{% block sidebar_label %}Menu{% endblock %}
+{% block sidebar %}
+  <a href="/events"> Événements</a>
+  <a href="/my-reservations" class="active"> Mes réservations</a>
+{% endblock %}
+{% block page_heading %}Mes réservations{% endblock %}
+{% block subtitle %}<span class="text-muted">Suivez vos réservations et annulez si besoin</span>{% endblock %}
+{% block content %}
+  {% for booking in bookings %}
+  <div class="card card-row">
+    <div class="card-meta">
+      <div class="symbol">🎫</div>
+      <div>
+        <h3>{{ booking.event.event_name }}</h3>
+        <p class="text-muted">📅 {{ booking.event.event_date }}</p>
+      </div>
     </div>
-
-    <div class="content">
-
-        <h1>Mes réservations</h1>
-
-        {% for booking in bookings %}
-        <div class="card">
-            <div class="header">
-                <div>
-                    <h3>{{ booking.event.event_name }}</h3>
-                    <p>{{ booking.event.event_date }}</p>
-                </div>
-
-                <span class="status {{ booking.status }}">
-                    {{ booking.status }}
-                </span>
-            </div>
-
-            <br>
-
-            <form action="/reservations/cancel/{{ booking.id }}" method="POST">
-                <button type="submit">
-                    Annuler
-                </button>
-            </form>
-        </div>
-        {% endfor %}
-
+    <div class="card-actions">
+      <span class="badge badge-{{ booking.status }}">
+        {% if booking.status == 'pending' %} En attente
+        {% elif booking.status == 'confirmed' %} Confirmé
+        {% else %} Annulé{% endif %}
+      </span>
+      {% if booking.status != 'cancelled' %}
+      <form action="/reservations/cancel/{{ booking.id }}" method="POST">
+        <button class="btn btn-danger" type="submit">Annuler</button>
+      </form>
+      {% endif %}
     </div>
-
-</body>
-
-</html>
+  </div>
+  {% else %}
+  <div class="empty">
+    <div class="empty-icon"></div>
+    <h3>Aucune réservation pour l'instant</h3>
+    <p>Parcourez les <a href="/events" class="btn btn-ghost" style="padding:0; border:none; background:none; color:var(--accent);">événements disponibles</a> et faites votre première réservation.</p>
+  </div>
+  {% endfor %}
+{% endblock %}

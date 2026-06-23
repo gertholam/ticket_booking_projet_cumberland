@@ -1,33 +1,48 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <title>Gestion des réservations</title>
-</head>
+{% extends 'base.html' %}
 
-<body>
-
-    <h1>Réservations</h1>
-
-    {% for booking in bookings %}
-    <div style="border:1px solid #ccc; padding:15px; margin-bottom:10px;">
-
-        <p><strong>Utilisateur :</strong> {{ booking.user.username }}</p>
-        <p><strong>Événement :</strong> {{ booking.event.event_name }}</p>
-        <p><strong>Status :</strong> {{ booking.status }}</p>
-
-        {% if booking.status == "pending" %}
-        <form action="/admin/bookings/accept/{{ booking.id }}" method="POST">
-            <button type="submit">✅ Accepter</button>
-        </form>
-
-        <form action="/admin/bookings/reject/{{ booking.id }}" method="POST">
-            <button type="submit">❌ Refuser</button>
-        </form>
-        {% endif %}
-
+{% block title %}Réservations — EventFlow{% endblock %}
+{% block sidebar_label %}Administration{% endblock %}
+{% block sidebar %}
+  <a href="/admin/events"> Événements</a>
+  <a href="/admin/events/create"> Créer un événement</a>
+  <a href="/admin/bookings" class="active"> Réservations</a>
+  <a href="/admin/users"> Utilisateurs</a>
+{% endblock %}
+{% block page_heading %}Gestion des réservations{% endblock %}
+{% block subtitle %}<span class="text-muted">Validez ou refusez les demandes des utilisateurs</span>{% endblock %}
+{% block content %}
+  {% for booking in bookings %}
+  <div class="card card-row">
+    <div class="card-meta">
+      <div class="symbol">👤</div>
+      <div>
+        <h3>{{ booking.event.event_name }}</h3>
+        <p class="text-muted"> {{ booking.user.username }} • 🎟️ {{ booking.number_tickets }} ticket(s)</p>
+        <p class="text-muted"> {{ booking.booking_date }}</p>
+      </div>
     </div>
-    {% endfor %}
 
-</body>
-</html>
+    <div class="card-actions">
+      <span class="badge badge-{{ booking.status }}">
+        {% if booking.status == 'pending' %}⏳ En attente
+        {% elif booking.status == 'confirmed' %} Confirmé
+        {% else %} Refusé{% endif %}
+      </span>
+      {% if booking.status == 'pending' %}
+      <form method="POST" action="/admin/bookings/accept/{{ booking.id }}">
+        <button class="btn btn-success" type="submit"> Accepter</button>
+      </form>
+      <form method="POST" action="/admin/bookings/reject/{{ booking.id }}">
+        <button class="btn btn-danger" type="submit"> Refuser</button>
+      </form>
+      {% endif %}
+    </div>
+  </div>
+  {% else %}
+  <div class="empty">
+    <div class="empty-icon">📭</div>
+    <h3>Aucune réservation</h3>
+    <p>Les réservations des utilisateurs apparaîtront ici.</p>
+  </div>
+  {% endfor %}
+{% endblock %}

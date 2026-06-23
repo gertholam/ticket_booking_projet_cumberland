@@ -1,56 +1,49 @@
-<!DOCTYPE html>
-<html lang="fr">
+{% extends 'base.html' %}
 
-<head>
-    <meta charset="UTF-8">
-    <title>Créer un événement</title>
-
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 700px;
-            margin: 40px auto;
-        }
-
-        input,
-        textarea {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
-        }
-
-        button {
-            padding: 10px 15px;
-            border: none;
-            background: #16a34a;
-            color: white;
-            cursor: pointer;
-        }
-    </style>
-</head>
-
-<body>
-
-    <h1>Créer un événement</h1>
-
+{% block title %}Créer un événement — EventFlow{% endblock %}
+{% block sidebar_label %}Administration{% endblock %}
+{% block sidebar %}
+  <a href="/admin/events"> Événements</a>
+  <a href="/admin/events/create" class="active"> Créer un événement</a>
+  <a href="/admin/bookings"> Réservations</a>
+  <a href="/admin/users"> Utilisateurs</a>
+{% endblock %}
+{% block page_heading %}Créer un événement{% endblock %}
+{% block subtitle %}<span class="text-muted">Ajoutez un nouvel événement dans le catalogue</span>{% endblock %}
+{% block topbar_action %}<a href="/admin/events" class="btn btn-ghost">← Retour</a>{% endblock %}
+{% block content %}
+  <div class="card form-card">
     <form method="POST" action="/admin/events/create">
-
-        <input type="text" name="title" placeholder="Nom de l'événement" required>
-
-        <input type="date" name="date" required>
-
-        <input type="text" name="categorie" placeholder="Catégorie" required>
-
-        <input type="text" name="location" placeholder="Lieu" required>
-
-        <textarea name="description" rows="6" placeholder="Description"></textarea>
-
-        <button type="submit">
-            Créer l'événement
-        </button>
-
+      <div class="form-grid">
+        <div class="form-group full">
+          <label>Nom de l'événement</label>
+          <input type="text" name="event_name" placeholder="ex: Concert Jazz au Parc" required>
+        </div>
+        <div class="form-group">
+          <label>Date</label>
+          <input type="date" name="event_date" required>
+        </div>
+        <div class="form-group">
+          <label>Catégorie</label>
+          <input type="text" name="category" placeholder="ex: Musique, Sport, Culture...">
+        </div>
+        <div class="form-group full">
+          <label>Lieu</label>
+          <input type="text" name="location" placeholder="ex: Paris, Salle Pleyel" required>
+        </div>
+        <div class="form-group">
+          <label>Places disponibles</label>
+          <input type="number" name="seats_available" min="1" required>
+        </div>
+        <div class="form-group full">
+          <label>Description</label>
+          <textarea name="description" placeholder="Décrivez l'événement..."></textarea>
+        </div>
+      </div>
+      <div class="card-actions" style="justify-content:flex-end; margin-top: 12px;">
+        <a href="/admin/events" class="btn btn-ghost">Annuler</a>
+        <button class="btn btn-success" type="submit"> Créer l'événement</button>
+      </div>
     </form>
-
-</body>
-
-</html>
+  </div>
+{% endblock %}

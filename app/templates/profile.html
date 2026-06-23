@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% set is_admin_profile = session.get('role') == 'admin' or user.role == 'admin' %}
+
+{% block title %}Mon profil — EventFlow{% endblock %}
+{% block sidebar_label %}{% if is_admin_profile %}Administration{% else %}Compte{% endif %}{% endblock %}
+{% block sidebar %}
+  {% if session.get('role') == 'admin' %}
+    <a href="/admin/events">Événements</a>
+    <a href="/admin/bookings">Réservations</a>
+    <a href="/admin/users">Utilisateurs</a>
+  {% else %}
+    <a href="/events">Événements</a>
+    <a href="/my-reservations">Mes réservations</a>
+  {% endif %}
+{% endblock %}
+{% block page_heading %}Mon profil{% endblock %}
+{% block subtitle %}
+  {% if session.get('role') == 'admin' %}
+    <span class="text-muted">Modifie ton nom d'utilisateur, ton e-mail et ton mot de passe</span>
+  {% else %}
+    <span class="text-muted">Modifie ton nom d'utilisateur ou ton mot de passe</span>
+  {% endif %}
+{% endblock %}
+{% block content %}
+  <div class="card card-column">
+    {% if error %}
+      <div class="alert alert-danger">{{ error }}</div>
+    {% endif %}
+
+    <form method="POST" class="form">
+      <label>Nom d'utilisateur</label>
+      <input type="text" name="username" value="{{ user.username }}" required>
+
+      {% if is_admin_profile %}
+        <label>Adresse e-mail</label>
+        <input type="email" name="email" value="{{ user.email }}" required>
+
+        <label>Rôle</label>
+        <select name="role">
+          <option value="client" {% if user.role == 'client' %}selected{% endif %}>Client</option>
+          <option value="admin" {% if user.role == 'admin' %}selected{% endif %}>Administrateur</option>
+        </select>
+      {% endif %}
+
+      <label>Nouveau mot de passe</label>
+      <input type="password" name="password" placeholder="Laisser vide pour garder l'actuel">
+
+      <label>Confirmer le nouveau mot de passe</label>
+      <input type="password" name="password_confirm" placeholder="Confirmer le mot de passe">
+
+      <div class="form-actions">
+        <button class="btn btn-secondary" type="submit">Enregistrer</button>
+        <a class="btn btn-link" href="{% if is_admin_profile %}/admin/events{% else %}/events{% endif %}">Annuler</a>
+      </div>
+    </form>
+  </div>
+{% endblock %}

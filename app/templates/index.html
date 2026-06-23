@@ -1,125 +1,60 @@
-<!DOCTYPE html>
-<html lang="fr">
+{% extends 'base.html' %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login & Register</title>
-
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
-        }
-
-        body {
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: #f5f5f5;
-        }
-
-        .container {
-            width: 300px;
-            background: white;
-            padding: 25px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-        }
-
-        h2 {
-            text-align: center;
-            margin-bottom: 15px;
-        }
-
-        input {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-
-        button {
-            width: 100%;
-            padding: 10px;
-            border: none;
-            background: #333;
-            color: white;
-            cursor: pointer;
-            border-radius: 4px;
-        }
-
-        button:hover {
-            background: #555;
-        }
-
-        .toggle {
-            text-align: center;
-            margin-top: 10px;
-            font-size: 14px;
-        }
-
-        .toggle a {
-            color: #333;
-            text-decoration: none;
-        }
-    </style>
-</head>
-
-<body>
-
-    <div class="container">
-
-        <!-- Login -->
-        <div id="login">
-            {% if error %}
-            <p style="color: red;">{{ error }}</p>
-            {% endif %}
-            <h2>Connexion</h2>
-            <form action="/login" method="POST">
-                <input type="text" name="username" placeholder="Nom d'utilisateur" required>
-                <input type="password" name="password" placeholder="Mot de passe" required>
-                <button type="submit">Se connecter</button>
-            </form>
-
-            <div class="toggle">
-                <a href="#" onclick="showRegister()">Créer un compte</a>
-            </div>
-        </div>
-
-        <!-- Register -->
-        <div id="register" style="display:none;">
-            <h2>Inscription</h2>
-            <form action="/register" method="POST">
-                <input type="text" name="username" placeholder="Nom d'utilisateur" required>
-                <input type="email" name="email" placeholder="Email" required>
-                <input type="password" name="password" placeholder="Mot de passe" required>
-                <button type="submit">S'inscrire</button>
-            </form>
-
-            <div class="toggle">
-                <a href="#" onclick="showLogin()">Déjà un compte ?</a>
-            </div>
-        </div>
-
+{% block title %}EventFlow — Connexion{% endblock %}
+{% block body_class %}auth-body{% endblock %}
+{% block layout %}
+  <div class="auth-card">
+    <div class="auth-logo">
+      <div class="icon"></div>
+      <h1>EventFlow</h1>
+      <p>Gérez et réservez vos événements</p>
     </div>
 
-    <script>
-        function showRegister() {
-            document.getElementById("login").style.display = "none";
-            document.getElementById("register").style.display = "block";
-        }
+    <div class="tab-switcher">
+      <button class="active" onclick="show('login', this)">Connexion</button>
+      <button onclick="show('register', this)">Inscription</button>
+    </div>
 
-        function showLogin() {
-            document.getElementById("register").style.display = "none";
-            document.getElementById("login").style.display = "block";
-        }
-    </script>
+    <div id="login" class="panel active">
+      {% if error %}<div class="auth-error">⚠️ {{ error }}</div>{% endif %}
+      <form action="/login" method="POST">
+        <div class="form-group">
+          <label>Nom d'utilisateur</label>
+          <input type="text" name="username" placeholder="ex: jean.dupont" required>
+        </div>
+        <div class="form-group">
+          <label>Mot de passe</label>
+          <input type="password" name="password" placeholder="••••••••" required>
+        </div>
+        <button type="submit" class="btn btn-primary btn-submit">Se connecter →</button>
+      </form>
+    </div>
 
-</body>
+    <div id="register" class="panel">
+      <form action="/register" method="POST">
+        <div class="form-group">
+          <label>Nom d'utilisateur</label>
+          <input type="text" name="username" placeholder="ex: jean.dupont" required>
+        </div>
+        <div class="form-group">
+          <label>Adresse e-mail</label>
+          <input type="email" name="email" placeholder="jean@exemple.com" required>
+        </div>
+        <div class="form-group">
+          <label>Mot de passe</label>
+          <input type="password" name="password" placeholder="••••••••" required>
+        </div>
+        <button type="submit" class="btn btn-primary btn-submit">Créer mon compte →</button>
+      </form>
+    </div>
+  </div>
 
-</html>
+  <script>
+    function show(id, btn) {
+      document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.tab-switcher button').forEach(b => b.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+      btn.classList.add('active');
+    }
+  </script>
+{% endblock %}

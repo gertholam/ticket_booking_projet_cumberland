@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ event.event_name }} — EventFlow{% endblock %}
+{% block sidebar_label %}Événement{% endblock %}
+{% block sidebar %}
+  <a href="/events"> Retour aux événements</a>
+  <a href="/my-reservations"> Mes réservations</a>
+{% endblock %}
+{% block page_heading %}{{ event.event_name }}{% endblock %}
+{% block subtitle %}<span class="text-muted">📅 {{ event.event_date }} • 📍 {{ event.location }}</span>{% endblock %}
+{% block content %}
+  <div class="card">
+    <h3>Description</h3>
+    <p class="text-muted">{{ event.description or 'Pas de description fournie.' }}</p>
+    <hr>
+    <p><strong>Places disponibles :</strong> {{ event.seats_available }}</p>
+    <div class="form-actions">
+      <form method="POST" action="/reservations/create">
+        <input type="hidden" name="event_id" value="{{ event.id }}">
+        <button class="btn btn-primary" type="submit">Réserver</button>
+      </form>
+      <a class="btn btn-ghost" href="/events">Retour</a>
+    </div>
+  </div>
+{% endblock %}

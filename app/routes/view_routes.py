@@ -7,13 +7,13 @@ from app.routes.auth_routes import is_admin
 
 view_bp = Blueprint('view', __name__)
 
-#  HOME
+# ACCUEIL
 @view_bp.route("/")
 def index():
     return render_template("index.html")
 
 
-#  EVENTS USER
+# ÉVÉNEMENTS UTILISATEUR
 @view_bp.route("/events")
 def events():
     events = Event.query.all()
@@ -28,7 +28,7 @@ def event_detail(id):
     return render_template('event_detail.html', event=event)
 
 
-#  CREATE EVENT
+# CRÉER UN ÉVÉNEMENT
 @view_bp.route("/admin/events/create", methods=["GET", "POST"])
 def create_event():
 
@@ -55,7 +55,7 @@ def create_event():
     return redirect("/admin/events")
 
 
-#  ADMIN EVENTS
+# ÉVÉNEMENTS ADMIN
 @view_bp.route("/admin/events")
 def admin_events():
 
@@ -66,7 +66,7 @@ def admin_events():
     return render_template("admin_dash.html", events=events)
 
 
-#  DELETE EVENT
+# SUPPRIMER UN ÉVÉNEMENT
 @view_bp.route("/admin/events/delete/<int:id>", methods=["POST"])
 def delete_event(id):
 
@@ -82,7 +82,7 @@ def delete_event(id):
     return redirect("/admin/events")
 
 
-#  EDIT EVENT
+# MODIFIER UN ÉVÉNEMENT
 @view_bp.route("/admin/events/edit/<int:id>", methods=["GET", "POST"])
 def edit_event(id):
 
@@ -108,7 +108,7 @@ def edit_event(id):
     return redirect("/admin/events")
 
 
-#  USER BOOKINGS
+# RÉSERVATIONS UTILISATEUR
 @view_bp.route("/my-reservations")
 def my_reservations():
 
@@ -121,7 +121,7 @@ def my_reservations():
     return render_template("user_dash.html", bookings=bookings)
 
 
-#  CREATE BOOKING
+# CRÉER RÉSERVATION
 @view_bp.route("/reservations/create", methods=["POST"])
 def create_booking():
 
@@ -157,7 +157,7 @@ def create_booking():
     return redirect("/my-reservations")
 
 
-#  CANCEL BOOKING
+# ANNULER RÉSERVATION
 @view_bp.route("/reservations/cancel/<int:id>", methods=["POST"])
 def cancel_booking(id):
 
@@ -170,7 +170,7 @@ def cancel_booking(id):
     return redirect("/my-reservations")
 
 
-#  ADMIN BOOKINGS
+# RÉSERVATIONS ADMIN
 @view_bp.route("/admin/bookings")
 def admin_bookings():
 
@@ -264,7 +264,7 @@ def delete_user(id):
     return redirect("/admin/users")
 
 
-#  ACCEPT BOOKING
+# ACCEPTER RÉSERVATION
 @view_bp.route("/admin/bookings/accept/<int:id>", methods=["POST"])
 def accept_booking(id):
 
@@ -277,7 +277,7 @@ def accept_booking(id):
     return redirect("/admin/bookings")
 
 
-#  REJECT BOOKING
+# REFUSER RÉSERVATION
 @view_bp.route("/admin/bookings/reject/<int:id>", methods=["POST"])
 def reject_booking(id):
 
@@ -290,14 +290,14 @@ def reject_booking(id):
     return redirect("/admin/bookings")
 
 
-#  LOGOUT
+# DÉCONNEXION
 @view_bp.route("/logout")
 def logout():
     session.clear()
     return redirect("/")
 
 
-#  USER PROFILE - view & update own username/password
+# PROFIL UTILISATEUR - afficher et mettre à jour le nom d'utilisateur et le mot de passe
 @view_bp.route("/profile", methods=["GET", "POST"])
 def profile():
     user_id = session.get("user_id")

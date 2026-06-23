@@ -18,25 +18,25 @@ def create_app():
     from app.config import Config
     app.config.from_object(Config)
 
-    # SECRET KEY
+    # CLÉ SECRÈTE
     app.secret_key = Config.SECRET_KEY
 
-    # INIT EXTENSIONS
+    # INITIALISATION DES EXTENSIONS
     db.init_app(app)
     bcrypt.init_app(app)
 
-    # JWT
+    # CONFIGURATION JWT
     app.config["JWT_SECRET_KEY"] = "jwt-secret-key"
     jwt.init_app(app)
 
-    # SECURITY HEADERS
+    # EN-TÊTES DE SÉCURITÉ
     Talisman(app, content_security_policy=None)
 
-    # RATE LIMITING
+    # LIMITATION DE TAUX
     limiter = Limiter(key_func=get_remote_address, default_limits=["200 per day", "50 per hour"])
     limiter.init_app(app)
 
-    # LOGGING
+    # JOURNALISATION
     handler = logging.StreamHandler()
     handler.setLevel(logging.INFO)
     formatter = logging.Formatter("%(asctime)s [%(levelname)s] %(message)s")
@@ -53,7 +53,7 @@ def create_app():
         g.user_id = session.get("user_id")
         g.user_role = session.get("role")
 
-    # IMPORTS DANS LA FONCTION (IMPORTANT 🔥)
+    # IMPORTS DANS LA FONCTION (IMPORTANT)
     from app.routes.auth_routes import auth_bp
     from app.routes.view_routes import view_bp
 

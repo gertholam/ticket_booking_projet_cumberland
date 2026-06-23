@@ -3,13 +3,13 @@ from app.models.user import User
 from app.models import db
 from app import bcrypt
 
-#  JWT (optionnel si tu veux garder)
+# JWT facultatif si souhaité
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 
 auth_bp = flask.Blueprint('auth', __name__)
 
 
-#  REGISTER (HTML)
+# INSCRIPTION (HTML)
 @auth_bp.route('/register', methods=['POST'])
 def register():
     data = flask.request.form
@@ -18,15 +18,15 @@ def register():
     email = data.get("email")
     password = data.get("password")
 
-    #  validation
+    # validation
     if not username or not email or not password:
-        return "Champs manquants ❌"
+        return "Champs manquants"
 
-    #  vérifie si user existe
+    # vérifie si l'utilisateur existe
     if User.query.filter_by(email=email).first():
-        return "Utilisateur existe déjà ❌"
+        return "Utilisateur existe déjà"
 
-    #  hash
+    # hachage
     hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
 
     new_user = User(
@@ -39,11 +39,11 @@ def register():
     db.session.add(new_user)
     db.session.commit()
 
-    #  redirection HTML (IMPORTANT)
+    # redirection HTML (IMPORTANT)
     return flask.redirect("/")
 
 
-#  LOGIN (SESSION) 
+# CONNEXION (SESSION)
 @auth_bp.route('/login', methods=['POST'])
 def login():
     data = flask.request.form
@@ -58,12 +58,12 @@ def login():
 
     if user and bcrypt.check_password_hash(user.password, password):
 
-        #  SESSION
+        # SESSION
         flask.session["user_id"] = user.id
         flask.session["username"] = user.username
         flask.session["role"] = user.role
 
-        #  redirection selon rôle
+        # redirection selon le rôle
         if user.role == "admin":
             return flask.redirect("/admin/events")
         else:
@@ -72,7 +72,7 @@ def login():
     return "Login incorrect ❌"
 
 
-#  PROTECTED ROUTE (JWT - optionnel)
+# ROUTE PROTÉGÉE (JWT facultatif)
 @auth_bp.route('/protected', methods=['GET'])
 @jwt_required()
 def protected():
@@ -84,6 +84,6 @@ def protected():
     })
 
 
-# CHECK ADMIN
+# VÉRIFIER ADMIN
 def is_admin():
     return flask.session.get("role") == "admin"

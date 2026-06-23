@@ -7,13 +7,13 @@ from app.routes.auth_routes import is_admin
 
 view_bp = Blueprint('view', __name__)
 
-# ✅ HOME
+#  HOME
 @view_bp.route("/")
 def index():
     return render_template("index.html")
 
 
-# ✅ EVENTS USER
+#  EVENTS USER
 @view_bp.route("/events")
 def events():
     events = Event.query.all()
@@ -28,7 +28,7 @@ def event_detail(id):
     return render_template('event_detail.html', event=event)
 
 
-# ✅ CREATE EVENT
+#  CREATE EVENT
 @view_bp.route("/admin/events/create", methods=["GET", "POST"])
 def create_event():
 
@@ -55,7 +55,7 @@ def create_event():
     return redirect("/admin/events")
 
 
-# ✅ ADMIN EVENTS
+#  ADMIN EVENTS
 @view_bp.route("/admin/events")
 def admin_events():
 
@@ -66,7 +66,7 @@ def admin_events():
     return render_template("admin_dash.html", events=events)
 
 
-# ✅ DELETE EVENT
+#  DELETE EVENT
 @view_bp.route("/admin/events/delete/<int:id>", methods=["POST"])
 def delete_event(id):
 
@@ -82,7 +82,7 @@ def delete_event(id):
     return redirect("/admin/events")
 
 
-# ✅ EDIT EVENT
+#  EDIT EVENT
 @view_bp.route("/admin/events/edit/<int:id>", methods=["GET", "POST"])
 def edit_event(id):
 
@@ -108,7 +108,7 @@ def edit_event(id):
     return redirect("/admin/events")
 
 
-# ✅ USER BOOKINGS
+#  USER BOOKINGS
 @view_bp.route("/my-reservations")
 def my_reservations():
 
@@ -121,12 +121,28 @@ def my_reservations():
     return render_template("user_dash.html", bookings=bookings)
 
 
-# ✅ CREATE BOOKING
+#  CREATE BOOKING
 @view_bp.route("/reservations/create", methods=["POST"])
 def create_booking():
 
     user_id = session.get("user_id")
     event_id = request.form.get("event_id", type=int)
+
+    if not user_id or not event_id:
+        return redirect("/events")
+
+    existing = Booking.query.filter_by(user_id=user_id, event_id=event_id).first()
+    if existing:
+        return "Déjà réservé"
+
+    event = Event.query.get(event_id)
+    if not event:
+        return redirect("/events")
+
+    if event.seats_available <= 0:
+        return "Plus de places disponibles"
+
+    event.seats_available -= 1
 
     new_booking = Booking(
         user_id=user_id,
@@ -141,7 +157,7 @@ def create_booking():
     return redirect("/my-reservations")
 
 
-# ✅ CANCEL BOOKING
+#  CANCEL BOOKING
 @view_bp.route("/reservations/cancel/<int:id>", methods=["POST"])
 def cancel_booking(id):
 
@@ -154,7 +170,7 @@ def cancel_booking(id):
     return redirect("/my-reservations")
 
 
-# ✅ ADMIN BOOKINGS
+#  ADMIN BOOKINGS
 @view_bp.route("/admin/bookings")
 def admin_bookings():
 
@@ -248,7 +264,7 @@ def delete_user(id):
     return redirect("/admin/users")
 
 
-# ✅ ACCEPT BOOKING
+#  ACCEPT BOOKING
 @view_bp.route("/admin/bookings/accept/<int:id>", methods=["POST"])
 def accept_booking(id):
 
@@ -261,7 +277,7 @@ def accept_booking(id):
     return redirect("/admin/bookings")
 
 
-# ✅ REJECT BOOKING
+#  REJECT BOOKING
 @view_bp.route("/admin/bookings/reject/<int:id>", methods=["POST"])
 def reject_booking(id):
 
@@ -274,14 +290,14 @@ def reject_booking(id):
     return redirect("/admin/bookings")
 
 
-# ✅ LOGOUT
+#  LOGOUT
 @view_bp.route("/logout")
 def logout():
     session.clear()
     return redirect("/")
 
 
-# ✅ USER PROFILE - view & update own username/password
+#  USER PROFILE - view & update own username/password
 @view_bp.route("/profile", methods=["GET", "POST"])
 def profile():
     user_id = session.get("user_id")

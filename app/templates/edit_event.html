@@ -27,6 +27,10 @@
           <label>Catégorie</label>
           <input type="text" name="category" value="{{ event.categorie }}">
         </div>
+        <div class="form-group">
+          <label>Places disponibles</label>
+          <input type="number" name="seats_available" min="1" value="{{ event.seats_available }}" required>
+        </div>
         <div class="form-group full">
           <label>Lieu</label>
           <input type="text" name="location" value="{{ event.location }}" required>

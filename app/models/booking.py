@@ -7,7 +7,7 @@ class Booking(db.Model):
     id = db.Column(db.Integer, primary_key=True)
 
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    event_id = db.Column(db.Integer, db.ForeignKey('events.id'))
+    event_id = db.Column(db.Integer, db.ForeignKey('events.id', ondelete='CASCADE'), nullable=False)
 
     booking_date = db.Column(db.DateTime, default=datetime.utcnow)
 
@@ -17,4 +17,4 @@ class Booking(db.Model):
 
     #  RELATIONS PROPREMENT NOMMÉES
     user = db.relationship("User", backref="user_bookings")
-    event = db.relationship("Event", backref="event_bookings")
+    event = db.relationship("Event", back_populates="bookings")

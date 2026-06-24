@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}Détails — {{ event.event_name }} — EventFlow{% endblock %}
+{% block sidebar_label %}Administration{% endblock %}
+{% block sidebar %}
+  <a href="/admin/events" class="active"> Événements</a>
+  <a href="/admin/events/create"> Créer un événement</a>
+  <a href="/admin/bookings"> Réservations</a>
+  <a href="/admin/users"> Utilisateurs</a>
+{% endblock %}
+{% block page_heading %}Détails de l'événement{% endblock %}
+{% block subtitle %}<span class="text-muted">{{ event.event_name }}</span>{% endblock %}
+{% block topbar_action %}<a href="/admin/events" class="btn btn-ghost">← Retour</a>{% endblock %}
+{% block content %}
+  <div class="card">
+    <h2>{{ event.event_name }}</h2>
+    <p class="text-muted">📅 {{ event.event_date }} • 📍 {{ event.location }}</p>
+    <hr>
+    <p><strong>Catégorie :</strong> {{ event.categorie or 'N/A' }}</p>
+    <p><strong>Places disponibles :</strong> {{ event.seats_available or 'N/A' }}</p>
+    <p><strong>Description :</strong></p>
+    <p class="text-muted">{{ event.description or 'Pas de description fournie.' }}</p>
+    <hr>
+    <div class="event-admin-actions">
+      <a href="/admin/events/edit/{{ event.id }}" class="btn btn-edit">Modifier</a>
+      <form action="/admin/events/delete/{{ event.id }}" method="POST" style="display:inline-block;">
+        <button class="btn btn-danger" type="submit" onclick="return confirm('Supprimer cet événement ?')">Supprimer</button>
+      </form>
+    </div>
+  </div>
+{% endblock %}

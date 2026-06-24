@@ -22,6 +22,7 @@
       </div>
     </div>
     <div class="card-actions">
+      <a href="/admin/events/{{ event.id }}" class="btn btn-primary"> Détails</a>
       <a href="/admin/events/edit/{{ event.id }}" class="btn btn-edit"> Modifier</a>
       <form action="/admin/events/delete/{{ event.id }}" method="POST">
         <button class="btn btn-danger" type="submit" onclick="return confirm('Supprimer cet événement ?')"> Supprimer</button>

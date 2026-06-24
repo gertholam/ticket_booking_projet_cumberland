@@ -35,6 +35,10 @@
       <form method="POST" action="/admin/bookings/reject/{{ booking.id }}">
         <button class="btn btn-danger" type="submit"> Refuser</button>
       </form>
+      {% elif booking.status == 'confirmed' %}
+      <form method="POST" action="/admin/bookings/cancel/{{ booking.id }}">
+        <button class="btn btn-danger" type="submit" onclick="return confirm('Annuler cette réservation ?')"> Annuler</button>
+      </form>
       {% endif %}
     </div>
   </div>

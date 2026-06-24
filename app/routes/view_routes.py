@@ -66,6 +66,19 @@ def admin_events():
     return render_template("admin_dash.html", events=events)
 
 
+@view_bp.route("/admin/events/<int:id>")
+def admin_event_detail(id):
+
+    if not is_admin():
+        return redirect("/")
+
+    event = Event.query.get(id)
+    if not event:
+        return redirect("/admin/events")
+
+    return render_template("admin_event_detail.html", event=event)
+
+
 # SUPPRIMER UN ÉVÉNEMENT
 @view_bp.route("/admin/events/delete/<int:id>", methods=["POST"])
 def delete_event(id):
@@ -76,6 +89,7 @@ def delete_event(id):
     event = Event.query.get(id)
 
     if event:
+        Booking.query.filter_by(event_id=event.id).delete()
         db.session.delete(event)
         db.session.commit()
 
@@ -180,6 +194,23 @@ def admin_bookings():
     bookings = Booking.query.all()
 
     return render_template("admin_bookings.html", bookings=bookings)
+
+
+@view_bp.route("/admin/bookings/cancel/<int:id>", methods=["POST"])
+def cancel_admin_booking(id):
+
+    if not is_admin():
+        return redirect("/")
+
+    booking = Booking.query.get(id)
+    if booking:
+        event = Event.query.get(booking.event_id)
+        if event:
+            event.seats_available = (event.seats_available or 0) + booking.number_tickets
+        db.session.delete(booking)
+        db.session.commit()
+
+    return redirect("/admin/bookings")
 
 
 @view_bp.route("/admin/users")

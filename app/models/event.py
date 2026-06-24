@@ -11,5 +11,9 @@ class Event(db.Model):
     categorie = db.Column(db.String(255))
     description = db.Column(db.Text)
 
-    # SUPPRIMÉ :
-    # bookings = db.relationship('Booking', backref='event', lazy=True)
+    bookings = db.relationship(
+        "Booking",
+        back_populates="event",
+        cascade="all, delete-orphan",
+        passive_deletes=True,
+    )
